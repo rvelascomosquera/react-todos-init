@@ -1,24 +1,40 @@
-import logo from './logo.svg';
+
+import { useState } from 'react';
 import './App.css';
+import Formulario from './Components/Formulario';
+import Tarea from './Components/Tarea';
+
 
 function App() {
+
+  const [listTask, setListTask] = useState([])
+
+  const newTask = (task) => {
+    setListTask([task, ...listTask])
+  }
+
+  const deleteTask = (id) => {
+    const filterTask = listTask.filter((e, index) => index !== id)
+    setListTask(filterTask);
+  }
+
   return (
+    <>
+    <div className="container">
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <h1>Mis Tareas Pendientes</h1>
+        <Formulario
+          newTask = {newTask}
+        />
+      </div>
+      <div className='list'>
+        {
+         listTask.map((e, index) => <Tarea key={index} task={e} remove={deleteTask} id={index} />)
+        }
+      </div>
     </div>
+    </>
+    
   );
 }
 
